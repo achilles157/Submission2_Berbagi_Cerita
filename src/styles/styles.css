@@ -887,3 +887,13 @@ footer {
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   }
 }
+
+.star-icon {
+  font-size: 24px; /* Ukuran bintang */
+  color: #635f2c; /* Warna abu-abu default */
+  cursor: pointer;
+}
+
+.star-icon.filled {
+  color: #f7dc40; /* Warna emas */
+}

@@ -1,5 +1,6 @@
 import { getStories } from '../../data/story-api';
 import { showFormattedDate } from '../../utils/index';
+import IndexedDBHelper from '../../utils/indexeddb'; // Import IndexedDBHelper
 
 export default class MyStoriesPage {
   constructor() {
@@ -44,7 +45,7 @@ export default class MyStoriesPage {
       // Ambil token dari localStorage
       const token = localStorage.getItem('story_token');
       if (!token) {
-        gridEl.innerHTML = `
+        gridEl.innerHTML = ` 
           <div class="error" role="alert">
             <p>Anda belum login. Silakan login terlebih dahulu.</p>
             <p style="margin-top: 1rem;">
@@ -108,7 +109,7 @@ export default class MyStoriesPage {
     const lat = story.lat;
     const lon = story.lon;
 
-    // Parse judul dan deskripsi (judul adalah baris pertama sebelum \n\n)
+    // Parse judul dan deskripsi
     let title = 'Tanpa Judul';
     let content = description;
     
@@ -125,25 +126,60 @@ export default class MyStoriesPage {
       ? content.slice(0, 150) + '...' 
       : content;
 
-    card.innerHTML = `
-      ${photoUrl ? `<img src="${this._escapeHtml(photoUrl)}" alt="Foto cerita ${this._escapeHtml(title)}" class="story-card-image" />` : '<div class="story-card-no-image">📷 Tanpa Foto</div>'}
-      
-      <div class="story-card-content">
-        <h3>${this._escapeHtml(title)}</h3>
-        <p class="story-meta">
-          <span>👤 ${this._escapeHtml(owner)}</span>
-          <span>📅 ${showFormattedDate(created, 'id-ID')}</span>
-        </p>
-        ${excerpt ? `<p class="story-description">${this._escapeHtml(excerpt)}</p>` : ''}
-        ${lat && lon ? `
-          <div class="story-location">
-            <small>📍 ${parseFloat(lat).toFixed(4)}, ${parseFloat(lon).toFixed(4)}</small>
+    // Periksa apakah cerita ini sudah favorit di IndexedDB
+    IndexedDBHelper.getFavoriteById(story.id).then(favorite => {
+      const isFavorite = favorite ? true : false;
+
+      card.innerHTML = `
+        ${photoUrl ? `<img src="${this._escapeHtml(photoUrl)}" alt="Foto cerita ${this._escapeHtml(title)}" class="story-card-image" />` : '<div class="story-card-no-image">📷 Tanpa Foto</div>'}
+        
+        <div class="story-card-content">
+          <h3>${this._escapeHtml(title)}</h3>
+          <p class="story-meta">
+            <span>👤 ${this._escapeHtml(owner)}</span>
+            <span>📅 ${showFormattedDate(created, 'id-ID')}</span>
+          </p>
+          ${excerpt ? `<p class="story-description">${this._escapeHtml(excerpt)}</p>` : ''}
+          ${lat && lon ? ` 
+            <div class="story-location">
+              <small>📍 ${parseFloat(lat).toFixed(4)}, ${parseFloat(lon).toFixed(4)}</small>
+            </div>
+          ` : ''}
+          
+          <div class="story-favorite">
+            <button class="favorite-btn" data-id="${story.id}" aria-label="Toggle favorit">
+              <span class="star-icon ${isFavorite ? 'filled' : ''}">★</span>
+            </button>
           </div>
-        ` : ''}
-      </div>
-    `;
+        </div>
+      `;
+
+      // Event listener untuk toggle favorit
+      const favoriteBtn = card.querySelector('.favorite-btn');
+      favoriteBtn.addEventListener('click', () => this._toggleFavorite(story));
+
+    });
 
     return card;
+  }
+
+  _toggleFavorite(story) {
+    const isFavorite = document.querySelector(`[data-id="${story.id}"] .star-icon`).classList.contains('filled');
+    if (isFavorite) {
+      // Hapus dari favorit jika sudah favorit
+      IndexedDBHelper.deleteFavorite(story.id);
+    } else {
+      // Tambahkan ke favorit
+      IndexedDBHelper.addFavorite(story);
+    }
+
+    // Update status ikon bintang
+    const starIcon = document.querySelector(`[data-id="${story.id}"] .star-icon`);
+    if (isFavorite) {
+      starIcon.classList.remove('filled');
+    } else {
+      starIcon.classList.add('filled');
+    }
   }
 
   _initializePagination() {

@@ -62,6 +62,7 @@ class App {
         <li role="none"><a href="#/" role="menuitem">Beranda</a></li>
         <li role="none"><a href="#/my-stories" role="menuitem">Jelajahi Cerita</a></li>
         <li role="none"><a href="#/add-story" role="menuitem">Tambah Cerita</a></li>
+        <li role="none"><a href="#/favorites" role="menuitem">Daftar Favorit</a></li>
         <li role="none"><a href="#/about" role="menuitem">Tentang</a></li>
         <li role="none"><a href="#" id="logout-btn" role="menuitem">Logout</a></li>
       `;

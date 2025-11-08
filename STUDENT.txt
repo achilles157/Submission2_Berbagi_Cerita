@@ -5,8 +5,7 @@ NAMA: Hana Anastasya Wardah
 ID: F269D5X0727
 
 ## URL Deployment
-URL: [ISI DENGAN URL DEPLOYMENT ANDA]
-Contoh: https://berbagi-cerita-hana.netlify.app
+URL: https://berbagicerita2.netlify.app/
 
 ## Teknologi yang Digunakan
 - Vanilla JavaScript (ES6+)
