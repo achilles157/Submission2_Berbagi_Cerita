@@ -44,7 +44,7 @@ export default class HomePage {
   async _initializeMap() {
     const L = window.L;
     
-    this.map = L.map('map').setView([-2.5489, 118.0149], 5);
+    this.map = L?.map('map').setView([-2.5489, 118.0149], 5);
 
     const streetLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap contributors',

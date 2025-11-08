@@ -1,8 +1,7 @@
-import CONFIG from './config'; // Mengimpor konfigurasi untuk BASE_URL
+import CONFIG from '../config'; // Mengimpor konfigurasi untuk BASE_URL
 
 // GET /stories - PUBLIC, TIDAK PERLU TOKEN
 export async function getStories({ page = 1, size = 20, withLocation = 0 } = {}) {
-  console.log('Fetching stories with config BASE_URL:', CONFIG.BASE_URL);
   const params = new URLSearchParams({
     page: page.toString(),
     size: size.toString(),
@@ -26,7 +25,6 @@ export async function getStories({ page = 1, size = 20, withLocation = 0 } = {})
   }
 
   // Mengirimkan request dengan atau tanpa Authorization header
-  console.log(headers,token);
   const res = await fetch(url, { headers });
 
   const data = await res.json();
