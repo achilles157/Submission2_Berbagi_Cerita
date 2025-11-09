@@ -105,7 +105,7 @@ class PushNotificationHelper {
     }
 
     try {
-      const response = await fetch(`${API_BASE_URL}/push/subscribe`, {
+      const response = await fetch(`${API_BASE_URL}/notifications/subscribe`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -169,7 +169,7 @@ class PushNotificationHelper {
     }
 
     try {
-      const response = await fetch(`${API_BASE_URL}/push/unsubscribe`, {
+      const response = await fetch(`${API_BASE_URL}/notifications/unsubscribe`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -292,7 +292,7 @@ class PushNotificationHelper {
     try {
       // Note: Ini endpoint untuk testing, sebenarnya push dikirim otomatis dari server
       // ketika ada cerita baru atau event tertentu
-      const response = await fetch(`${API_BASE_URL}/push/test`, {
+      const response = await fetch(`${API_BASE_URL}/notifications/test`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`
