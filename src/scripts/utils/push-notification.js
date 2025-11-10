@@ -1,5 +1,5 @@
 // VAPID Public Key dari Dicoding Story API
-const VAPID_PUBLIC_KEY = 'BN7-r0Svv7CsTi18-OPYtJLVW0bfuZ1x1UtrygczKjephDAEovlcn8ESd9Ne0LhFtUI91lLphB5pThML0jKlhCs';
+const VAPID_PUBLIC_KEY = 'BCCs2eonMI-6H2ctvFaWg-UYdDv387Vno_bzUzALpB442r2lCnsHmtrx8biyPi_E-1fSGABK_Qs_GlvPoJJqxbk';
 const API_BASE_URL = 'https://story-api.dicoding.dev/v1';
 
 class PushNotificationHelper {
@@ -78,11 +78,12 @@ class PushNotificationHelper {
         userVisibleOnly: true,
         applicationServerKey: applicationServerKey
       });
+      const subscriptionJSON = this.subscription.toJSON();
 
       console.log('Push subscription:', this.subscription);
       
       // Send subscription to Dicoding API
-      await this._sendSubscriptionToServer(this.subscription);
+      await this._sendSubscriptionToServer(subscriptionJSON);
       
       // Save subscription status to localStorage
       localStorage.setItem('push_subscribed', 'true');
